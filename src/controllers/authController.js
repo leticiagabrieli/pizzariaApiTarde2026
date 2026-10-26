@@ -7,7 +7,7 @@ export const login =async (req, res)=> {
     try{
 //1. verificar se o usuário existe no banco de dados 
 const clientes = await clienteService.findAll(cpf);
-const cliente=cliente [0];
+const cliente=clientes[0];
 
 if (!cliente){
     return res. status(401).json({message: "Credenciais inválidas"});
@@ -21,7 +21,7 @@ if (!senhaValida){
 //O 'payload' são as informações que queremos guardar no token 
 const payload= {cpf: cliente.cpf,email:cliente.email};
 // O token é assinado com nossa chave secreta do .env 
-const token =jwt.sign(payload,process.env.JTW_SECRET, {
+const token =jwt.sign(payload,process.env.JWT_SECRET, {
     expiresIn: '1h'//Token expira em 1 hora 
 });
 
