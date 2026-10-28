@@ -7,7 +7,7 @@ import Joi from 'joi';
 //Criação dos Schemas que o validate irá usar para validar dados do usuário
 export const produtoCreateSchema = Joi.object({
   nomeProduto: Joi.string().required().max(100),
-  descrição: Joi.string().required().max(100),
+  descricao: Joi.string().required().max(100),
   tipo: Joi.string().max(15).allow(''),
   valor: Joi.string().max(30).allow(''),
   imagem  : Joi.string().required(100),
@@ -15,7 +15,7 @@ export const produtoCreateSchema = Joi.object({
 
 export const produtoUpdateSchema = Joi.object({
   nomeProduto: Joi.string().max(100),
-  descrição: Joi.string().max(30).allow(''),
+  descricao: Joi.string().max(30).allow(''),
   tipo: Joi.string().max(30).allow(''),
   valor: Joi.string(),
   imagem : Joi.string().email().max(50),
@@ -24,9 +24,9 @@ export const produtoUpdateSchema = Joi.object({
 export const listarproduto = async (req, res) => {
     try {
      
-      const {minValor,maxValor, tipo, nomeProduto,idProduto} = req.query;
+      const {minValor, maxValor, tipo, nomeProduto, idProduto} = req.query;
    
-      const produto = await produtoService.findAll(minValor,maxValor, tipo, nomeProduto,idProduto);
+      const produto = await produtoService.findAll(minValor, maxValor, tipo, nomeProduto, idProduto);
   
       res.json(produto);
     } catch (err) {
@@ -65,7 +65,7 @@ export const atualizarproduto = async (req, res) => {
 
 export const deletarproduto = async (req, res) => {
   try {
-    const { idProduto } = req.params;
+    const {idProduto} = req.params;
     const deleted = await produtoService.remove(idProduto);
     if (!deleted) {
       return res.status(404).json({ error: 'produto não encontrado' });

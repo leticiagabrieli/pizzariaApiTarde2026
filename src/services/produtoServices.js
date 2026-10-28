@@ -1,8 +1,7 @@
 // src/services/clienteServices.js
 import db from '../db/db.js';
-import bcrypt from 'bcrypt';
 
-export const findAll = async (minValor,maxValor, tipo, nomeProduto,idProduto) => {
+export const findAll = async (minValor, maxValor, tipo, nomeProduto, idProduto) => {
   // 1. Define a consulta SQL base
   let sql = 'SELECT * FROM produto';
   // 2. Cria um array para as condições WHERE
@@ -26,7 +25,7 @@ export const findAll = async (minValor,maxValor, tipo, nomeProduto,idProduto) =>
   }
   // Adicionamos o filtro de nome
   if (nomeProduto) {
-    conditions.push('LOWER(nome) LIKE ?');
+    conditions.push('LOWER(nomeProduto) LIKE ?');
     values.push(`%${nomeProduto.toLowerCase()}%`);
   }
 
@@ -36,7 +35,6 @@ export const findAll = async (minValor,maxValor, tipo, nomeProduto,idProduto) =>
     values.push(tipo);
   }
 
-  // 5. Se houver condições, anexa elas à consulta SQL
   if (conditions.length > 0) {
     sql += ' WHERE ' + conditions.join(' AND ');
   }
@@ -48,33 +46,19 @@ export const findAll = async (minValor,maxValor, tipo, nomeProduto,idProduto) =>
 
 
 export const create = async (produtoData) => {
- // const saltRounds = 10;
- //const hashedPassword = await bcrypt.hash(clienteData.senha, saltRounds);
-
-  //const newCliente = {
-   // ...clienteData,
-   // senha: hashedPassword,
-   // tipo: 'cliente',
-  //};
-
-  await db.query('INSERT INTO usuario SET ?', newproduto);
-
- //delete newCliente.senha;
-return newproduto;
+  await db.query('INSERT INTO produto SET ?', produtoData);
+return produtoData;
 };
 
 
 export const update = async (idProduto, produtoData) => {
-  if (produtoData.senha) {
-    const saltRounds = 10;
-    produtoData.senha = await bcrypt.hash(produtoData.senha, saltRounds);
-  }
-  const [result] = await db.query('UPDATE usuario SET ? WHERE cpf = ?', [produtoData, idProduto
+ 
+  const [result] = await db.query('UPDATE produto SET ? WHERE idProduto = ?', [produtoData, idProduto
   ]);
   return result.affectedRows > 0;
 };
 
 export const remove = async (idProduto) => {
-  const [result] = await db.query('DELETE FROM usuario WHERE cpf = ?', [idProduto]);
+  const [result] = await db.query('DELETE FROM produto WHERE idproduto = ?', [idProduto]);
   return result.affectedRows > 0;
 };

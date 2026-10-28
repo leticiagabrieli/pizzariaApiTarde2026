@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import * as clienteService from '../services/clienteServices.js';
 export const login =async (req, res)=> {
-    const {cpf,senha } = req.body;
+    const {cpf, senha} = req.body;
     try{
 //1. verificar se o usuário existe no banco de dados 
 const clientes = await clienteService.findAll(cpf);
